@@ -1,0 +1,165 @@
+﻿@page "/"
+@inject IJSRuntime JS
+@inject PieceDrawingFactory PieceDrawingFactory
+@inject ColorConverter ColorConverter
+
+<PageTitle>Vegraris</PageTitle>
+<svg viewBox="0,0,1004,888" style="width: 100%;height: 100%; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+    <defs>
+        <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" />
+        </filter>
+        <linearGradient id="dropTraceOpMask" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="transparent" />
+            <stop offset="100%" stop-color="white" />
+        </linearGradient>
+    </defs>
+    <foreignObject width="1004" height="888">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="height: 888px;display: flex;justify-content: center;align-items: center;flex-direction: row;font-size: 16px;">
+            <div style="height: 848px;display: flex;">
+                <div class="side">
+                    <NeonPanel HeaderText="HOLD" Style="height: 200px;">
+                        <Content>
+                            @if (!game.Paused)
+                            {
+                                if (game.HoldingPiece != null)
+                                {
+                                    <StaticPieceView Piece="game.HoldingPiece" />
+                                }
+                                else
+                                {
+                                    <span style="font-size: 20px">EMPTY</span>
+                                }
+                            }
+                        </Content>
+                    </NeonPanel>
+                    <div class="indicators">
+                        <SharedDigitalFontSegments DigitalFont="sevenSegmentFont" />
+                        <NeonPanel HeaderText="SCORE">
+                            <Content>
+                                <DigitalNumber Value="game.Score" DigitalFont="sevenSegmentFont" IntegerDigits="7" UseSharedSegments="true" />
+                            </Content>
+                        </NeonPanel>
+                        <NeonPanel HeaderText="LEVEL">
+                            <Content>
+                                <DigitalNumber Value="game.Level" DigitalFont="sevenSegmentFont" IntegerDigits="7" UseSharedSegments="true" />
+                            </Content>
+                        </NeonPanel>
+                        <NeonPanel HeaderText="LINES">
+                            <Content>
+                                <DigitalNumber Value="game.Lines" DigitalFont="sevenSegmentFont" IntegerDigits="7" UseSharedSegments="true" />
+                            </Content>
+                        </NeonPanel>
+                    </div>
+                </div>
+                <NeonPanel Style="width: 404px;">
+                    <Content>
+                        <svg viewBox="-2,-2,404,804">
+                            <defs>
+                                <g id="gameArea">
+                                    @foreach (var item in game.LockedPieces)
+                                    {
+                                        if (item?.Path != null)
+                                        {
+                                            <path d="@PieceDrawingFactory.Create(item.Path)" style="color:@ColorConverter.ToColor(item.Tetromino)">
+                                                @if (item.Clearing)
+                                                {
+                                                    <animate attributeName="opacity" values="0.7;0;0.7" dur="66ms" repeatCount="indefinite" />
+                                                }
+                                            </path>
+                                        }
+                                    }
+                                    @if (@game.ActivePiece?.Path != null)
+                                    {
+                                        <path d="@PieceDrawingFactory.Create(game.ActivePiece.Path)" style="color:@ColorConverter.ToColor(game.ActivePiece.Tetromino)">
+                                            @if (game.ActivePiece?.LockingDown == true)
+                                            {
+                                                <animateTransform attributeType="XML" attributeName="transform" type="translate" values="-1.0 0;1.0 0;-1.0 0" begin="0ms" dur="100ms" repeatCount="indefinite" />
+                                            }
+                                        </path>
+                                    }
+                                </g>
+                            </defs>
+                            @foreach (var item in game.DropTraces)
+                            {
+                                <DropTraceView DropTrace="item" />
+                            }
+
+                            @if (!game.Paused)
+                            {
+                                <use href="#gameArea" filter="url(#blur)" class="piece-blur" />
+                                @if (@game.ActivePiece?.GhostPath != null)
+                                {
+                                    <path d="@PieceDrawingFactory.Create(game.ActivePiece.GhostPath)" style="fill:transparent; stroke:gray; stroke-width:1;" />
+                                }
+                                <use href="#gameArea" class="piece-tint" />
+                                <use href="#gameArea" class="piece-border" />
+                            }
+                        </svg>
+                    </Content>
+                </NeonPanel>
+                <div class="side">
+                    <NeonPanel HeaderText="NEXT" Style="height: 500px;">
+                        <Content>
+                            @if (!game.Paused)
+                            {
+                                @foreach (var item in game.Previews)
+                                {
+                                    <div style="display:flex;flex-direction: column;justify-content: center;height: 140px;">
+                                        <StaticPieceView Piece="item" />
+                                    </div>
+                                }
+                            }
+                        </Content>
+                    </NeonPanel>
+                    @if (!game.Playing)
+                    {
+                        <button @onclick=Play disabled="@(isReady)">PLAY</button>
+                    }
+                    else if (!game.Paused)
+                    {
+                        <button @onclick=game.Pause>PAUSE</button>
+                    }
+                    else
+                    {
+                        <button @onclick=game.Resume>RESUME</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </foreignObject>
+    <foreignObject x="300" y="40" width="404" height="808">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="height: 808px;display: flex;justify-content: center;align-items: center;flex-direction: row;font-size: 16px;">
+            @if (!isReady && !game.Playing)
+            {
+                <NeonPanel HeaderText="How to Play">
+                    <Content>
+                        <div style="margin:0px 20px">
+                            <p><span class="label">Shift:</span> ← or →</p>
+                            <p><span class="label">Rotate CW:</span> ↑</p>
+                            <p><span class="label">Soft drop:</span> ↓</p>
+                            <p><span class="label">Hard drop:</span> Space bar</p>
+                            <p><span class="label">Hold:</span> Shift or C</p>
+                            <p><span class="label">Rotate CCW:</span> Left Ctrl or Z</p>
+                        </div>
+                    </Content>
+                </NeonPanel>
+            }
+            @if (game.Paused)
+            {
+                <div style="display:grid">
+                    <span style="font-size: 40px">
+                        - PAUSED -
+                    </span>
+                    <button @onclick=game.Quit>QUIT</button>
+                </div>
+            }
+            @if (isReady)
+            {
+                <div style="font-size: 40px">
+                    READY?
+                </div>
+            }
+        </div>
+    </foreignObject>
+</svg>

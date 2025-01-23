@@ -1,0 +1,92 @@
+:root {
+    --neon-hue: 0;
+    --neon-sat: 0%;
+    --neon-color: hsl(var(--neon-hue), var(--neon-sat), 92%);
+    --neon-color-hd: hsla(var(--neon-hue), var(--neon-sat), 20%, 0.8);
+    --neon-color-bg: hsla(var(--neon-hue), var(--neon-sat), 10%, 0.8);
+    --neon-color-bd: hsl(var(--neon-hue), var(--neon-sat), 85%);
+    --neon-color-gl: hsla(var(--neon-hue), var(--neon-sat), 75%, 0.502);
+}
+
+.neon-panel {
+    color: var(--neon-color);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    box-shadow: 0px 0px 5px 2px var(--neon-color-gl);
+    border-radius: 8px;
+    border: 2px solid var(--neon-color-bd);
+    margin: 20px;
+    overflow: hidden;
+}
+
+    .neon-panel > div {
+        box-shadow: inset 0px 0px 5px 2px var(--neon-color-gl);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+        .neon-panel > div:first-child {
+            background-color: var(--neon-color-hd);
+            border-style: solid;
+            border-width: 0px 0px 2px 0px;
+            border-color: inherit;
+            padding: 10px 12px 8px 12px;
+            font-weight: bold;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .neon-panel > div:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            background-color: var(--neon-color-bg);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" color="white" viewBox="0 0 40 40" style="opacity:0.03;"><defs><filter id="glow" height="300%" width="300%" x="-75%" y="-75%"><feMorphology operator="dilate" radius="3" in="SourceAlpha" result="thicken" /><feGaussianBlur in="thicken" stdDeviation="3" result="blurred" /><feFlood flood-color="currentcolor" result="glowColor" /><feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" /><feMerge><feMergeNode in="softGlow_colored"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path style="filter:url(%23glow)" fill="currentcolor" d="M 19,-40L 21,-40L 21,19L 80,19L 80,21L 21,21L 21,80L 19,80L 19,21L -40,21L -40,19L 19,19Z"/></svg>');
+            background-repeat: repeat;
+            background-size: 40px;
+            background-clip: content-box;
+            background-position: center;
+            font-weight: unset;
+            border-width: 0px;
+            height: inherit;
+        }
+
+button {
+    color: var(--neon-color);
+    background-color: var(--neon-color-hd);
+    box-shadow: 0px 0px 5px 2px var(--neon-color-gl), inset 0px 0px 10px 2px var(--neon-color-gl);
+    border-radius: 6px;
+    border: 2px solid var(--neon-color-bd);
+    padding: 6px 15px;
+    -webkit-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+    font-family: 'Recipekorea', Helvetica, Arial, sans-serif;
+    margin: 20px;
+    padding: 26px 40px 20px 40px;
+    font-size: 20px;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+    button:hover:enabled:not([disabled]) {
+        box-shadow: 0px 0px 12px 3px var(--neon-color-gl), inset 0px 0px 12px 3px var(--neon-color-gl);
+    }
+
+    button:active:enabled:not([disabled]) {
+        box-shadow: 0px 0px 12px 3px var(--neon-color-gl);
+        -webkit-transition: none;
+        transition: none;
+    }
+
+    button:disabled {
+        color: var(--neon-color-gl);
+        border-color: var(--neon-color-gl);
+        box-shadow: none;
+    }

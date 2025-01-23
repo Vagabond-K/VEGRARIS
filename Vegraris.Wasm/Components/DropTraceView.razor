@@ -1,0 +1,20 @@
+﻿@using Vegraris.Tracing
+@inject PieceDrawingFactory PieceDrawingFactory
+@inject ColorConverter ColorConverter
+@if (DropTrace != null)
+{
+    <svg>
+        <g filter="url(#blur)" style="color:@ColorConverter.ToColor(DropTrace.Tetromino);opacity:0.3; ">
+            <animate attributeName="opacity" to="0.0" dur="1s" fill="freeze" repeatCount="1" />
+            <mask id="@($"dtm_{DropTrace.GetHashCode()}")">
+                <path d="@PieceDrawingFactory.Create(DropTrace.MovingPath)" style="fill:url(#dropTraceOpMask);" />
+            </mask>
+            <path d="@PieceDrawingFactory.Create(DropTrace.MovingPath)" style="fill:currentColor; mask:url(#@($"dtm_{DropTrace.GetHashCode()}"))" />
+            <path d="@PieceDrawingFactory.Create(DropTrace.Path)" style="fill:currentColor;" />
+        </g>
+    </svg>
+}
+@code {
+    [Parameter]
+    public DropTrace? DropTrace { get; set; }
+}

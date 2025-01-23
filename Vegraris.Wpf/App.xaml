@@ -1,0 +1,213 @@
+﻿<Application
+    x:Class="Vegraris.Wpf.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vki="http://schemas.vagabond-k.com/winfx/2016/xaml/indicators"
+    xmlns:vkid="clr-namespace:VagabondK.Indicators.DigitalFonts;assembly=VagabondK.Indicators"
+    xmlns:local="clr-namespace:Vegraris.Wpf"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/Simple.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <Color x:Key="TextColor">#FFFFFFFF</Color>
+            <Color x:Key="LebelColor">Gray</Color>
+            <Color x:Key="MainColor">#FF595959</Color>
+            <Color x:Key="BorderColor">#FF222222</Color>
+            <Color x:Key="HoverColor">#50000000</Color>
+
+            <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
+            <SolidColorBrush x:Key="LebelBrush" Color="{StaticResource LebelColor}" />
+            <SolidColorBrush x:Key="MainBrush" Color="{StaticResource MainColor}" />
+            <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+            <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}" />
+            <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#FF222222" />
+            <SolidColorBrush x:Key="GroupBoxBackgroundBrush" Color="#C0000000" />
+
+            <LinearGradientBrush x:Key="ShineBrush" EndPoint="0.5,0.971" StartPoint="0.5,0.042">
+                <GradientStop Color="#59FFFFFF" Offset="0" />
+                <GradientStop Color="#00FFFFFF" Offset="1" />
+                <GradientStop Color="#26FFFFFF" Offset="0.467" />
+                <GradientStop Color="#00FFFFFF" Offset="0.475" />
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="HoverShineBrush" EndPoint="0.5,0.971" StartPoint="0.5,0.042">
+                <GradientStop Color="#4CFFFFFF" Offset="0" />
+                <GradientStop Color="#26FFFFFF" Offset="1" />
+                <GradientStop Color="#26FFFFFF" Offset="0.467" />
+                <GradientStop Color="#00FFFFFF" Offset="0.475" />
+                <GradientStop Color="#00FFFFFF" Offset="0.856" />
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="PressedBrush" EndPoint="0.5,0.971" StartPoint="0.5,0.042">
+                <GradientStop Color="#4C000000" Offset="0" />
+                <GradientStop Color="#26FFFFFF" Offset="1" />
+                <GradientStop Color="#4C000000" Offset="0.467" />
+                <GradientStop Color="#26FFFFFF" Offset="0.479" />
+            </LinearGradientBrush>
+
+            <Style x:Key="Label" TargetType="Run">
+                <Setter Property="Foreground" Value="{DynamicResource LebelBrush}"/>
+            </Style>
+
+            <Style TargetType="GroupBox">
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupBox">
+                            <Border Background="{StaticResource GroupBoxBackgroundBrush}" CornerRadius="4"
+                                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="true" UseLayoutRounding="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="4" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="4" />
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.ColumnSpan="3" Grid.RowSpan="3" BorderThickness="4" BorderBrush="{StaticResource MainBrush}" CornerRadius="1.5"/>
+                                    <Border Grid.ColumnSpan="3" Background="{StaticResource MainBrush}" CornerRadius="5,5,0,0" BorderBrush="{StaticResource BorderBrush}">
+                                        <Grid>
+                                            <Rectangle Grid.ColumnSpan="3" RadiusX="2.5" RadiusY="2.5" VerticalAlignment="Stretch" Height="Auto" Margin="1">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0.5,0.971" StartPoint="0.5,0.042">
+                                                        <GradientStop Color="#26FFFFFF" Offset="0" />
+                                                        <GradientStop Color="#00FFFFFF" Offset="1" />
+                                                        <GradientStop Color="#26FFFFFF" Offset="0.467" />
+                                                        <GradientStop Color="#00FFFFFF" Offset="0.475" />
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Grid>
+                                    </Border>
+                                    <ContentPresenter Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True" Margin="10,10,6,6" />
+                                    <Border Grid.Column="1" Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
+                <Setter Property="Background" Value="{StaticResource MainBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Padding" Value="30,15"/>
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <ContentPresenter Content="{Binding}" Margin="0,5,0,0"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Grid x:Name="Grid">
+                                    <Border x:Name="Background" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="HoverBorder" Visibility="Hidden" Background="{StaticResource HoverBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="HoverShineBorder" Visibility="Hidden" Background="{StaticResource HoverShineBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="PressedBorder" Visibility="Hidden" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" Background="{StaticResource PressedBrush}" />
+                                    <Border x:Name="ShineBorder" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" Background="{StaticResource ShineBrush}" Opacity="1" />
+                                    <ContentPresenter x:Name="Content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
+                                </Grid>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="HoverBorder" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="HoverShineBorder" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="PressedBorder" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="true" />
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" Value="{StaticResource DisabledBackgroundBrush}" TargetName="Background" />
+                                    <Setter Property="Opacity" TargetName="Content" Value="0.3" />
+                                    <Setter Property="Opacity" TargetName="ShineBorder" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="ListBox">
+                <Setter Property="Background" Value="{x:Null}" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+            </Style>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Background" Value="{StaticResource BorderBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Grid>
+                                <Grid x:Name="Grid">
+                                    <Border x:Name="Background" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="Selected" Visibility="Hidden" Background="{StaticResource MainBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="HoverBorder" Visibility="Hidden" Background="{StaticResource HoverBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="HoverShineBorder" Visibility="Hidden" Background="{StaticResource HoverShineBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" />
+                                    <Border x:Name="ShineBorder" Opacity="0.3" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" Background="{StaticResource ShineBrush}" />
+                                    <ContentPresenter x:Name="Content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
+                                </Grid>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="HoverBorder" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="HoverShineBorder" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Opacity" TargetName="ShineBorder" Value="1" />
+                                    <Setter TargetName="Selected" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="GamingAreaBorder" TargetType="{x:Type ContentControl}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ContentControl}">
+                            <Border BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" CornerRadius="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Background="#C0000000">
+                                <Border BorderThickness="4" BorderBrush="{StaticResource MainBrush}" CornerRadius="0.5">
+                                    <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                </Border>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <vkid:SevenSegmentFont x:Key="NumberFont" Size="38" SlantAngle="8"/>
+            
+            <Style TargetType="vki:DigitalNumber">
+                <Setter Property="DigitalFont" Value="{StaticResource NumberFont}"/>
+                <Setter Property="Active" Value="White"/>
+                <Setter Property="IntegerDigits" Value="7"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

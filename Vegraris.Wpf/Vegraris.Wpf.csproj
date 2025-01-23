@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>Vegraris</AssemblyName>
+		<ApplicationIcon>Images/Icon.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="VagabondK.Indicators.Windows" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Vegraris.Core\Vegraris.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Fonts\Recipekorea.ttf" />
+		<Resource Include="Images\background.jpg" />
+		<Resource Include="Images\Icon.ico" />
+		<Resource Include="Images\Icon.png" />
+		<Resource Include="Sounds\lineClear.wav" />
+		<Resource Include="Sounds\lockDown.wav" />
+		<Resource Include="Sounds\readyMessage.wav" />
+	</ItemGroup>
+
+</Project>

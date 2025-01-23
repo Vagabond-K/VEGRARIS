@@ -1,0 +1,21 @@
+﻿<div class="neon-panel" style="@Style">
+    @if (Header != null)
+    {
+        <div>@Header</div>
+    }
+    else if (HeaderText != null)
+    {
+        <div>@HeaderText</div>
+    }
+    <div>@Content</div>
+</div>
+@code {
+    [Parameter(CaptureUnmatchedValues = false)]
+    public RenderFragment? Header { get; set; }
+    [Parameter]
+    public string? HeaderText { get; set; }
+    [Parameter]
+    public RenderFragment? Content{ get; set; }
+    [Parameter]
+    public string? Style { get; set; }
+}

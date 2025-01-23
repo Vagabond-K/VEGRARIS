@@ -1,0 +1,20 @@
+﻿@inject PieceDrawingFactory PieceDrawingFactory
+@inject ColorConverter ColorConverter
+@if (Piece?.Path != null)
+{
+    <svg viewBox="-5,-5,@Width,@Height" style="width:@(Width)px; height:@(Height)px">
+        <defs>
+            <path id="@($"sp_{Piece.GetHashCode()}")" d="@PieceDrawingFactory.Create(Piece.Path)" style="color:@ColorConverter.ToColor(Piece.Tetromino);" />
+        </defs>
+        <use href="#@($"sp_{Piece.GetHashCode()}")" filter="url(#blur)" class="piece-blur" />
+        <use href="#@($"sp_{Piece.GetHashCode()}")" class="piece-tint" />
+        <use href="#@($"sp_{Piece.GetHashCode()}")" class="piece-border" />
+    </svg>
+}
+@code {
+    [Parameter]
+    public StaticPiece? Piece { get; set; }
+
+    public int Width => (Piece?.Width ?? 0) * 40 + 10;
+    public int Height => (Piece?.Height ?? 0) * 40 + 10;
+}

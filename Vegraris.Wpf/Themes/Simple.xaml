@@ -1,0 +1,124 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vgt="clr-namespace:Vegraris;assembly=Vegraris.Core"
+    xmlns:vgtp="clr-namespace:Vegraris.Palettes;assembly=Vegraris.Core"
+    xmlns:vgtt="clr-namespace:Vegraris.Tracing;assembly=Vegraris.Core"
+    xmlns:vki="http://schemas.vagabond-k.com/winfx/2016/xaml/indicators"
+    xmlns:vkid="clr-namespace:VagabondK.Indicators.DigitalFonts;assembly=VagabondK.Indicators"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:cvt="clr-namespace:Vegraris.Wpf.Converters"
+    xmlns:local="clr-namespace:Vegraris.Wpf">
+
+    <sys:Double x:Key="CellSize">40</sys:Double>
+    <sys:Double x:Key="CornerRadius">0</sys:Double>
+    <sys:Double x:Key="StrokeThickness">4</sys:Double>
+    <cvt:NumericProductConverter x:Key="ScaleCellSizeConverter" Default="{StaticResource CellSize}"/>
+    <cvt:NumericProductConverter x:Key="ScaleHalfConverter" Default="0.5"/>
+    <cvt:NumericProductConverter x:Key="ScaleLeftSideWidthConverter" Default="4"/>
+    <cvt:CastingConverter x:Key="CastingConverter"/>
+    <cvt:PieceConverter x:Key="PieceConverter" CellSize="{StaticResource CellSize}" StrokeThickness="{StaticResource StrokeThickness}" CornerRadius="{StaticResource CornerRadius}" ContainsHole="False"/>
+    <cvt:ColorConverter x:Key="ColorConverter">
+        <cvt:ColorConverter.Palette>
+            <vgtp:DefaultPalette/>
+        </cvt:ColorConverter.Palette>
+    </cvt:ColorConverter>
+
+    <VisualBrush x:Key="GamingAreaBrush" TileMode="Tile" Stretch="None" ViewboxUnits="Absolute" ViewportUnits="Absolute">
+        <VisualBrush.Viewbox>
+            <Rect Width="{StaticResource CellSize}" Height="{StaticResource CellSize}"/>
+        </VisualBrush.Viewbox>
+        <VisualBrush.Viewport>
+            <Rect Width="{StaticResource CellSize}" Height="{StaticResource CellSize}"/>
+        </VisualBrush.Viewport>
+        <VisualBrush.Transform>
+            <TranslateTransform X="2" Y="2"/>
+        </VisualBrush.Transform>
+        <VisualBrush.Visual>
+            <Rectangle x:Name="visual" Stroke="#FF202020" Width="{StaticResource CellSize}" Height="{StaticResource CellSize}"
+                       StrokeThickness="{Binding Source={StaticResource StrokeThickness}, Converter={StaticResource ScaleHalfConverter}}"/>
+        </VisualBrush.Visual>
+    </VisualBrush>
+
+    <Style x:Key="LeftSideStyle" TargetType="FrameworkElement">
+        <Setter Property="Width" Value="{Binding Source={StaticResource CellSize}, Converter={StaticResource ScaleLeftSideWidthConverter}}"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+    <DataTemplate x:Key="StaticPieceTemplate" DataType="{x:Type vgt:Piece}">
+        <Path Data="{Binding Path, Converter={StaticResource PieceConverter}}">
+            <UIElement.CacheMode>
+                <BitmapCache/>
+            </UIElement.CacheMode>
+            <Path.Fill>
+                <SolidColorBrush Color="{Binding Tetromino, Converter={StaticResource ColorConverter}}"/>
+            </Path.Fill>
+        </Path>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vgt:ActivePiece}">
+        <Path Data="{Binding Path, Converter={StaticResource PieceConverter}}">
+            <Path.Fill>
+                <SolidColorBrush Color="{Binding Tetromino, Converter={StaticResource ColorConverter}}"/>
+            </Path.Fill>
+        </Path>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vgt:LockedPiece}">
+        <Path x:Name="path" Data="{Binding Path, Converter={StaticResource PieceConverter}}">
+            <Path.Fill>
+                <SolidColorBrush Color="{Binding Tetromino, Converter={StaticResource ColorConverter}}"/>
+            </Path.Fill>
+        </Path>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Clearing}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                            <DoubleAnimation Storyboard.TargetName="path" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.03"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="GhostTemplate" DataType="{x:Type vgt:ActivePiece}">
+        <Path
+            Data="{Binding GhostPath, Converter={StaticResource PieceConverter}}" StrokeThickness="1" Opacity="0.5">
+            <Path.Stroke>
+                <SolidColorBrush Color="White"/>
+            </Path.Stroke>
+        </Path>
+    </DataTemplate>
+
+    <Style x:Key="GamingArea" TargetType="ContentPresenter">
+        <Setter Property="Width" Value="{Binding Columns, Converter={StaticResource ScaleCellSizeConverter}}"/>
+        <Setter Property="Height" Value="{Binding Rows, Converter={StaticResource ScaleCellSizeConverter}}"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <FrameworkElement.Resources>
+                            <Style TargetType="ItemsControl">
+                                <Setter Property="Focusable" Value="False"/>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </FrameworkElement.Resources>
+                        <ItemsControl ItemsSource="{Binding LockedPieces}" ItemTemplate="{DynamicResource {DataTemplateKey DataType={x:Type vgt:LockedPiece}}}"/>
+                        <ContentPresenter Content="{Binding ActivePiece}" ContentTemplate="{DynamicResource GhostTemplate}"/>
+                        <ContentPresenter Content="{Binding ActivePiece}" ContentTemplate="{DynamicResource {DataTemplateKey DataType={x:Type vgt:ActivePiece}}}"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
