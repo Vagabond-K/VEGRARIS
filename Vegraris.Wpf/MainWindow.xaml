@@ -226,13 +226,13 @@
                     </Style>
                 </Border.Style>
                 <GroupBox Header="How to Play" Background="#D0000000">
-                    <TextBlock FontSize="20" LineHeight="40" Margin="20,20,20,0">
+                    <TextBlock FontSize="20" LineHeight="40" Margin="10,10,10,-10">
                     <Run Style="{StaticResource Label}">Shift:</Run> ← or →<LineBreak/>
                     <Run Style="{StaticResource Label}">Rotate CW:</Run> ↑<LineBreak/>
                     <Run Style="{StaticResource Label}">Soft drop:</Run> ↓<LineBreak/>
-                    <Run Style="{StaticResource Label}">Hard drop:</Run> Space bar<LineBreak/>
-                    <Run Style="{StaticResource Label}">Hold:</Run> Shift or C<LineBreak/>
-                    <Run Style="{StaticResource Label}">Rotate CCW:</Run> Left Ctrl or Z
+                    <Run Style="{StaticResource Label}">Hard drop:</Run> Space or R-Shift<LineBreak/>
+                    <Run Style="{StaticResource Label}">Hold:</Run> L-Shift or C<LineBreak/>
+                    <Run Style="{StaticResource Label}">Rotate CCW:</Run> L-Ctrl or Z
                     </TextBlock>
                 </GroupBox>
             </Border>

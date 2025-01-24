@@ -49,8 +49,8 @@ namespace Vegraris.Wasm.Pages
                 "ArrowUp" => PlayerInput.RotateCW,
                 "KeyZ" or "ControlLeft" => PlayerInput.RotateCCW,
                 "ArrowDown" => PlayerInput.SoftDrop,
-                "Space" => PlayerInput.HardDrop,
-                "KeyC" or "ShiftLeft" or "ShiftRight" => PlayerInput.Hold,
+                "Space" or "ShiftRight" => PlayerInput.HardDrop,
+                "KeyC" or "ShiftLeft" => PlayerInput.Hold,
                 _ => PlayerInput.None
             };
 

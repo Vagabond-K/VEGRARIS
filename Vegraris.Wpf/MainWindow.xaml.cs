@@ -30,8 +30,8 @@ namespace Vegraris.Wpf
                 Key.Up => PlayerInput.RotateCW,
                 Key.Z or Key.LeftCtrl => PlayerInput.RotateCCW,
                 Key.Down => PlayerInput.SoftDrop,
-                Key.Space => PlayerInput.HardDrop,
-                Key.C or Key.LeftShift or Key.RightShift => PlayerInput.Hold,
+                Key.Space or Key.RightShift => PlayerInput.HardDrop,
+                Key.C or Key.LeftShift => PlayerInput.Hold,
                 _ => PlayerInput.None
             };
     }
