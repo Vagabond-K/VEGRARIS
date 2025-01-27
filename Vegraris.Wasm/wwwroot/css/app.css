@@ -40,6 +40,33 @@ body {
     color: #808080;
 }
 
+.game-controller {
+    margin: 10px;
+    display: none;
+}
+
+@media (width <= 480px) and (orientation: portrait) {
+    .game-controller {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.game-button {
+    margin: 10px;
+    padding: 16px 32px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-button > svg {
+    width: 48px;
+    height: 48px;
+    fill: currentColor;
+}
+
 h1:focus {
     outline: none;
 }

@@ -72,6 +72,14 @@ namespace Vegraris.Wasm.Pages
             }
         }
 
+        private void OnHardDrop(bool state) => game.Control(PlayerInput.HardDrop, state);
+        private void OnShiftLeft(bool state) => game.Control(PlayerInput.ShiftLeft, state);
+        private void OnShiftRight(bool state) => game.Control(PlayerInput.ShiftRight, state);
+        private void OnSoftDrop(bool state) => game.Control(PlayerInput.SoftDrop, state);
+        private void OnRotateCW(bool state) => game.Control(PlayerInput.RotateCW, state);
+        private void OnRotateCCW(bool state) => game.Control(PlayerInput.RotateCCW, state);
+        private void OnHold(bool state) => game.Control(PlayerInput.Hold, state);
+
         [JSInvokable]
         public void UpdateFrame(double timeStamp)
         {
