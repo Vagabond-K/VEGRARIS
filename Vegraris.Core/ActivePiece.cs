@@ -8,7 +8,7 @@ namespace Vegraris
     {
         private readonly static Dictionary<Tetromino, ActivePiece> defaults;
 
-        private readonly static (int, int)[][] tSpinFront = { CreateTSpinPositions(-1, -1).ToArray(), CreateTSpinPositions(-1, 1).ToArray() };
+        private readonly static (int, int)[][] tSpinFront = { CreateTSpinPositions(-1, -1).ToArray(), CreateTSpinPositions(1, -1).ToArray() };
         private readonly static (int, int)[][] tSpinBack = { CreateTSpinPositions(-1, 1).ToArray(), CreateTSpinPositions(1, 1).ToArray() };
 
         private static IEnumerable<(int, int)> CreateTSpinPositions(int offsetX, int offsetY)
@@ -164,18 +164,21 @@ namespace Vegraris
             for (int i = 0; i < 5; i++)
             {
                 var offset = cw ? wallKicks[rotation % shapes.Length * 2, i] : wallKicks[(rotation + 3) % shapes.Length * 2 + 1, i];
-                if (ValidateLocation(offset.Item1, offset.Item2, cw ? 1 : 3))
+                if (ValidateLocation(offset.Item1, -offset.Item2, cw ? 1 : 3))
                 {
-                    Update(x + offset.Item1, y + offset.Item2, (rotation + (cw ? 1 : 3)) % 4);
+                    Update(x + offset.Item1, y - offset.Item2, (rotation + (cw ? 1 : 3)) % 4);
 
                     if (Tetromino == Tetromino.T)
                     {
+                        var centerX = x + 1;
+                        var centerY = y + 1;
+
                         int CountTSpinBlocks((int, int)[][] tSpinBlocks)
                             => tSpinBlocks.Count(positions =>
                             {
                                 var tOffset = positions[rotation];
-                                var targetX = x + tOffset.Item1;
-                                var targetY = y + tOffset.Item2;
+                                var targetX = centerX + tOffset.Item1;
+                                var targetY = centerY + tOffset.Item2;
                                 return targetX < 0 || targetX >= grid.Columns || targetY < 0 || targetY >= grid.Rows || grid[targetX, targetY] != Tetromino.Unknown;
                             });
 
@@ -184,7 +187,7 @@ namespace Vegraris
 
                         if (front + back >= 3)
                         {
-                            if (front == 2 || offset.Item1 != 0 || offset.Item2 != 0)
+                            if (front == 2)
                                 TSpin = TSpin.TSpin;
                             else
                                 TSpin = TSpin.Mini;
